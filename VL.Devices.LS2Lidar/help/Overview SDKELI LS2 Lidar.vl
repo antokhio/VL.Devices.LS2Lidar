@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document xmlns:p="property" xmlns:r="reflection" Id="NmS9BLh20oDPqdKcJuUIKD" LanguageVersion="2025.7.2" Version="0.128">
+  <NugetDependency Id="VEkPgC5pIr5LHPPkFgaYft" Location="VL.CoreLib" Version="2025.7.2" />
+  <Patch Id="IzvHzX5iZUvNUo5ZDEcrFf">
+    <Canvas Id="M86LlULPtyBPr6pW74rJ91" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
+    <!--
+
+    ************************ Application ************************
+
+-->
+    <Node Name="Application" Bounds="100,100" Id="GbpQTjtIf9dLhZfedgNH7W">
+      <p:NodeReference>
+        <Choice Kind="ContainerDefinition" Name="Process" />
+        <CategoryReference Kind="Category" Name="Primitive" />
+      </p:NodeReference>
+      <Patch Id="Snk9c4Ew4I0NoMivowQMXE">
+        <Canvas Id="U1JWsQ1K3rDN7F4HqJMXgS" CanvasType="Group">
+          <Node Bounds="478,330,415,19" Id="UvwyJmx7UqbMcmv8p5Oqts">
+            <p:NodeReference LastCategoryFullName="Devices.LS2Lidar" LastDependency="VL.Devices.LS2Lidar.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="ProcessAppFlag" Name="LS2Lidar" />
+            </p:NodeReference>
+            <Pin Id="PzrydzINFFKLw2gOejPnC9" Name="Output" Kind="StateOutputPin" />
+            <Pin Id="UPaoAGUq4NKPsrswSuXKEh" Name="Lidar State" Kind="OutputPin" />
+            <Pin Id="RtC6ZQuozTJMLHn7NHc9Kq" Name="Scans" Kind="OutputPin" />
+          </Node>
+          <Pad Id="AyOULfY05CsQGzS9TfRMsN" Comment="Lidar State" Bounds="685,390,92,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="456,610,99,88" Id="GC8tJCtx0sJMY1ZivCdiYt">
+            <p:NodeReference LastCategoryFullName="Primitive" LastDependency="Builtin">
+              <Choice Kind="StatefulRegion" Name="Region (Stateful)" Fixed="true" />
+              <CategoryReference Kind="Category" Name="Primitive" />
+              <Choice Kind="ProcessStatefulRegion" Name="Cache" />
+            </p:NodeReference>
+            <Pin Id="RTbZgn16mCaPyCp8XwY6Mm" Name="Force" Kind="InputPin" />
+            <Pin Id="EgvpJLIuaSNLnbvPrqFIEd" Name="Dispose Cached Outputs" Kind="InputPin" />
+            <Pin Id="AiFjnQK2naoPGkYSRuWHp4" Name="Has Changed" Kind="OutputPin" />
+            <Patch Id="My4WINKA0vbOCW6BgdWEKo" ManuallySortedPins="true">
+              <Patch Id="DL0mANRICZGPVkPJjpYBdU" Name="Create" ManuallySortedPins="true" />
+              <Patch Id="AnGpzX4y7MmLA86G8DC6mk" Name="Then" ManuallySortedPins="true" />
+              <Node Bounds="478,639,65,26" Id="Faras6X5T8HON6Xlqwwgcg">
+                <p:NodeReference LastCategoryFullName="Devices.LS2Lidar.LS2LidarNode" LastDependency="VL.Devices.LS2Lidar.vl">
+                  <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                  <FullNameCategoryReference ID="Devices.LS2Lidar.LS2LidarNode" />
+                  <Choice Kind="OperationCallFlag" Name="Connect" />
+                </p:NodeReference>
+                <Pin Id="VApRzE1xqM2QX3TK0pU96J" Name="Input" Kind="StateInputPin" />
+                <Pin Id="UxvZ1yj7V2GMn5bH0FsLyh" Name="Ip Address" Kind="InputPin" DefaultValue="" />
+                <Pin Id="Ul1bk1Z5oUtL5zX4ePaALk" Name="Port" Kind="InputPin" />
+                <Pin Id="UYM8U5W7pRjPpyybtBEsBi" Name="Output" Kind="StateOutputPin" />
+              </Node>
+            </Patch>
+          </Node>
+          <Pad Id="H9jarIolhfpMuWqWpHBMAm" Comment="Ip Address" Bounds="510,570,118,20" ShowValueBox="true" isIOBox="true" Value="192.168.2.170">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="NHMosEykETfORvlLdxozoQ" Comment="Force" Bounds="458,530,35,35" ShowValueBox="true" isIOBox="true" Value="false">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="ImmutableTypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:buttonmode p:Assembly="VL.UI.Forms" p:Type="VL.HDE.PatchEditor.Editors.ButtonModeEnum">Bang</p:buttonmode>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="710,601,117,88" Id="FUnUNub3f3GPN5F1mZZKgr">
+            <p:NodeReference LastCategoryFullName="Primitive" LastDependency="Builtin">
+              <Choice Kind="StatefulRegion" Name="Region (Stateful)" Fixed="true" />
+              <CategoryReference Kind="Category" Name="Primitive" />
+              <Choice Kind="ProcessStatefulRegion" Name="Cache" />
+            </p:NodeReference>
+            <Pin Id="H5iOVGFQBMKLTWB43Ru4A9" Name="Force" Kind="InputPin" />
+            <Pin Id="FYahCoUXfymQMGbacJz4wz" Name="Dispose Cached Outputs" Kind="InputPin" />
+            <Pin Id="TMdlHG3mWhwN1RdaY07wvJ" Name="Has Changed" Kind="OutputPin" />
+            <Patch Id="M98jgrxUXijL2vFIDvH73n" ManuallySortedPins="true">
+              <Patch Id="BApPzTjRlp8LjCVtipMtNi" Name="Create" ManuallySortedPins="true" />
+              <Patch Id="CTZ7nn8AsSbNxrCJkzJZ4K" Name="Then" ManuallySortedPins="true" />
+              <Node Bounds="737,631,78,26" Id="AQFFbavDLVyOx8aFA2O5Gm">
+                <p:NodeReference LastCategoryFullName="Devices.LS2Lidar.LS2LidarNode" LastDependency="VL.Devices.LS2Lidar.vl">
+                  <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                  <FullNameCategoryReference ID="Devices.LS2Lidar.LS2LidarNode" />
+                  <Choice Kind="OperationCallFlag" Name="StartScanning" />
+                </p:NodeReference>
+                <Pin Id="Ae7fsBw669QLLQmfNHZgfz" Name="Input" Kind="StateInputPin" />
+                <Pin Id="P6j00gE7QTALjwQr4RP3M5" Name="Output" Kind="StateOutputPin" />
+              </Node>
+            </Patch>
+          </Node>
+          <Pad Id="D0nUwdrM6juLi32hUjrrV4" Comment="Force" Bounds="712,521,35,35" ShowValueBox="true" isIOBox="true" Value="False">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="ImmutableTypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:buttonmode p:Assembly="VL.UI.Forms" p:Type="VL.HDE.PatchEditor.Editors.ButtonModeEnum">Bang</p:buttonmode>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="889,530,91,137" Id="FrtrSp6QrfcLlww5nzwwgn">
+            <p:NodeReference LastCategoryFullName="Reactive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="StatefulRegion" Name="Region (Stateful)" Fixed="true" />
+              <CategoryReference Kind="Category" Name="Reactive" NeedsToBeDirectParent="true" />
+              <Choice Kind="ProcessAppFlag" Name="ForEach" />
+            </p:NodeReference>
+            <Pin Id="IR6H5OPIvosQcT6ep3mhjd" Name="Node Context" Kind="InputPin" IsHidden="true" />
+            <Pin Id="NP3bjAnM9ABM4PRIz4Q14P" Name="Messages" Kind="InputPin" />
+            <Pin Id="IrG2Se18gz8Mpbn6VLCOCV" Name="Reset" Kind="InputPin" />
+            <Pin Id="RcVLfVarpwYMV16LQE55Xj" Name="Output" Kind="OutputPin" IsHidden="true" />
+            <Pin Id="AoWsg7CmwxZOyPyYtAzs5Q" Name="Result" Kind="OutputPin" />
+            <Patch Id="Us9U9KKlKG7NR6KCk8FvHL" ManuallySortedPins="true">
+              <Patch Id="KffosImaHTDOoRnLLnXjJV" Name="Create" ManuallySortedPins="true" />
+              <Patch Id="KHdCv2h5Lw1LgaKIqkUc0w" Name="Update" ManuallySortedPins="true">
+                <Pin Id="FVvs4TkdfsxLjRzLdugqfa" Name="Input 1" Kind="InputPin" />
+                <Pin Id="ObPySeWikr3L8dud7yPgBG" Name="Output" Kind="OutputPin" />
+              </Patch>
+              <ControlPoint Id="G1ZrhDTfUmwPxzojpCFmh1" Bounds="903,538" />
+              <ControlPoint Id="E7hfWm7VG5gLKUvh31NHLl" Bounds="903,660" />
+              <Node Bounds="901,560,67,26" Id="QVkBo5cyUSPPtjysSpyyR6">
+                <p:NodeReference LastCategoryFullName="Devices.LS2Lidar.LidarScanData" LastDependency="VL.Devices.LS2Lidar.vl">
+                  <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                  <FullNameCategoryReference ID="Devices.LS2Lidar.LidarScanData" />
+                  <Choice Kind="OperationCallFlag" Name="Points" />
+                </p:NodeReference>
+                <Pin Id="V52G31fPV3JMu3P4rQBuv0" Name="Input" Kind="StateInputPin" />
+                <Pin Id="CJkx6xFGUMTLU9AeyImwnN" Name="Output" Kind="StateOutputPin" />
+                <Pin Id="JIOmBTLQmr3QI3tG3easJf" Name="Points" Kind="OutputPin" />
+              </Node>
+            </Patch>
+          </Node>
+          <Node Bounds="889,691,65,19" Id="OYfEJ7YnweeMsYgU0f1GSp">
+            <p:NodeReference LastCategoryFullName="Reactive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <FullNameCategoryReference ID="Reactive" />
+              <Choice Kind="ProcessAppFlag" Name="HoldLatest" />
+            </p:NodeReference>
+            <Pin Id="RvuXARwuC21NRfw1HFx5mb" Name="Node Context" Kind="InputPin" IsHidden="true" />
+            <Pin Id="AEE09YzMiboOI3UVL0INfV" Name="Initial Result" Kind="InputPin" IsHidden="true" />
+            <Pin Id="D0FBqdqYmrDQNqxiUQ8IXF" Name="Async Notifications" Kind="InputPin" />
+            <Pin Id="AyD7GEaajWSLU3FzvlMr3g" Name="Reset" Kind="InputPin" />
+            <Pin Id="E8RB2Mcpm4oNTr7hONeP2g" Name="Output" Kind="OutputPin" IsHidden="true" />
+            <Pin Id="E7WdjOmoguFMbJGovGVB0u" Name="Value" Kind="OutputPin" />
+            <Pin Id="TV8oGohiAPmQaJTx3tPHVg" Name="On Data" Kind="OutputPin" />
+          </Node>
+          <Pad Id="QLIHHmBFgaZQd1PXVIIobf" Comment="" Bounds="884,740,190,132" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="258,610,117,92" Id="ELww8rTrCsfQDgVEcRp9je">
+            <p:NodeReference LastCategoryFullName="Primitive" LastDependency="Builtin">
+              <Choice Kind="StatefulRegion" Name="Region (Stateful)" Fixed="true" />
+              <CategoryReference Kind="Category" Name="Primitive" />
+              <Choice Kind="ProcessStatefulRegion" Name="Cache" />
+            </p:NodeReference>
+            <Pin Id="MQfIXpqrYIJMsWVmCM1vYH" Name="Force" Kind="InputPin" />
+            <Pin Id="G3x9yH8ZeXtLd2t2VqZRhg" Name="Dispose Cached Outputs" Kind="InputPin" />
+            <Pin Id="QgpvSN4tQW7N7h9YVYBtGk" Name="Has Changed" Kind="OutputPin" />
+            <Patch Id="DTy4Swjdx4vOk2QRdZYFiY" ManuallySortedPins="true">
+              <Patch Id="QsRIUqDtTvPLFx5N0ICLOG" Name="Create" ManuallySortedPins="true" />
+              <Patch Id="E2Os7WAhOloLyFYUEoV2P7" Name="Then" ManuallySortedPins="true" />
+              <Node Bounds="296,651,67,26" Id="NcX8KP9JmrfL0nthwOouWm">
+                <p:NodeReference LastCategoryFullName="Devices.LS2Lidar.LS2LidarNode" LastDependency="VL.Devices.LS2Lidar.vl">
+                  <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                  <Choice Kind="OperationCallFlag" Name="Disconnect" />
+                </p:NodeReference>
+                <Pin Id="FotxNKPYRJgO2tnzsuE33U" Name="Input" Kind="StateInputPin" />
+                <Pin Id="VfqioPoJ7xsPVpqShmdyRQ" Name="Output" Kind="StateOutputPin" />
+              </Node>
+            </Patch>
+          </Node>
+          <Pad Id="TDNDElvPjivNqVRLiTiTJu" Comment="Force" Bounds="260,530,35,35" ShowValueBox="true" isIOBox="true" Value="False">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="ImmutableTypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:buttonmode p:Assembly="VL.UI.Forms" p:Type="VL.HDE.PatchEditor.Editors.ButtonModeEnum">Bang</p:buttonmode>
+            </p:ValueBoxSettings>
+          </Pad>
+        </Canvas>
+        <Patch Id="Jr1a0ugEyquLLUiurPuQUt" Name="Create" />
+        <Patch Id="HA3F8jxOGWePZqp14C90E8" Name="Update" />
+        <ProcessDefinition Id="E4HSp1HrCfELNiFTsVMVLJ">
+          <Fragment Id="I8ZTAAPO9u0L3j23F1d9mf" Patch="Jr1a0ugEyquLLUiurPuQUt" Enabled="true" />
+          <Fragment Id="CoQKVLA5IIfOPMNS4WS6l6" Patch="HA3F8jxOGWePZqp14C90E8" Enabled="true" />
+        </ProcessDefinition>
+        <Link Id="NoGhw1xV7VCM6tP1Njl3eR" Ids="UPaoAGUq4NKPsrswSuXKEh,AyOULfY05CsQGzS9TfRMsN" />
+        <Link Id="AszjSjFEB3kPHorplfsrTH" Ids="PzrydzINFFKLw2gOejPnC9,VApRzE1xqM2QX3TK0pU96J" />
+        <Link Id="QCxNMPCmHGnLVdEcJCsTGV" Ids="H9jarIolhfpMuWqWpHBMAm,UxvZ1yj7V2GMn5bH0FsLyh" />
+        <Link Id="D2JG2GQ1AZcNr2yeoqF6ec" Ids="NHMosEykETfORvlLdxozoQ,RTbZgn16mCaPyCp8XwY6Mm" />
+        <Link Id="IG5guFnI5mYN1xxWSLrOwv" Ids="D0nUwdrM6juLi32hUjrrV4,H5iOVGFQBMKLTWB43Ru4A9" />
+        <Link Id="MfZbqWf86Q0QQbOnOIyRMV" Ids="PzrydzINFFKLw2gOejPnC9,Ae7fsBw669QLLQmfNHZgfz" />
+        <Link Id="Qy1T7PUPLcrPx3TLvmCVhM" Ids="FVvs4TkdfsxLjRzLdugqfa,G1ZrhDTfUmwPxzojpCFmh1" IsHidden="true" />
+        <Link Id="KWC4PYZhjakPoOBVTqAW4W" Ids="E7hfWm7VG5gLKUvh31NHLl,ObPySeWikr3L8dud7yPgBG" IsHidden="true" />
+        <Link Id="L0gJKcSyWUBL89n6Hm1yLY" Ids="RtC6ZQuozTJMLHn7NHc9Kq,NP3bjAnM9ABM4PRIz4Q14P" />
+        <Link Id="RV1SnZyuxh3NYLml5bm2BY" Ids="G1ZrhDTfUmwPxzojpCFmh1,V52G31fPV3JMu3P4rQBuv0" />
+        <Link Id="V00iibN8WP8LBFka6L5ndK" Ids="JIOmBTLQmr3QI3tG3easJf,E7hfWm7VG5gLKUvh31NHLl" />
+        <Link Id="RnBubdj3rlJMZivUJXS8Zf" Ids="AoWsg7CmwxZOyPyYtAzs5Q,D0FBqdqYmrDQNqxiUQ8IXF" />
+        <Link Id="PZMmQvn7mpNPfmFLZTMdff" Ids="E7WdjOmoguFMbJGovGVB0u,QLIHHmBFgaZQd1PXVIIobf" />
+        <Link Id="EEOuPKILU7HMCDU20KbwvO" Ids="TDNDElvPjivNqVRLiTiTJu,MQfIXpqrYIJMsWVmCM1vYH" />
+        <Link Id="GhROnf17HT8MR665XRIK22" Ids="PzrydzINFFKLw2gOejPnC9,FotxNKPYRJgO2tnzsuE33U" />
+      </Patch>
+    </Node>
+  </Patch>
+  <NugetDependency Id="TuCKZkiL4YNO1drgSPCjMu" Location="VL.Devices.LS2Lidar" Version="0.0.0" />
+</Document>
