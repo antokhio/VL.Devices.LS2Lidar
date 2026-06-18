@@ -5,26 +5,6 @@
     <Canvas Id="BJ9JslqYZVULj1FNgjCX5K" DefaultCategory="Devices.LS2Lidar" CanvasType="FullCategory">
       <!--
 
-    ************************ LidarScanData ************************
-
--->
-      <Node Name="LidarScanData" Bounds="330,179" Id="UHZQK0G8MCjNPUBhy3iZR2">
-        <p:NodeReference>
-          <Choice Kind="ForwardDefinition" Name="Forward" />
-          <CategoryReference Kind="Category" Name="Primitive" />
-        </p:NodeReference>
-        <p:TypeAnnotation LastCategoryFullName="Devices.LS2Lidar.Model" LastDependency="Devices.LS2Lidar.dll">
-          <Choice Kind="TypeFlag" Name="LidarScanData" />
-          <FullNameCategoryReference ID="Devices.LS2Lidar.Model" />
-          <AssemblyReference ID="Devices.LS2Lidar.dll" />
-        </p:TypeAnnotation>
-        <Patch Id="NDNjhD0x0BjLhBear6zGAF">
-          <Canvas Id="H0xzciy3SeQQdkBAs7bJzm" BordersChecked="false" CanvasType="Group" />
-          <ProcessDefinition Id="Dp0qvrbfQxXNv63uH1jehP" IsHidden="true" />
-        </Patch>
-      </Node>
-      <!--
-
     ************************ ScanPoint ************************
 
 -->
@@ -41,6 +21,26 @@
         <Patch Id="OiWeKv9gBHbLvpxIwxAUpt">
           <Canvas Id="CwJp18ZNCohL53afkOlK8e" BordersChecked="false" CanvasType="Group" />
           <ProcessDefinition Id="QyOl9OLGKGqMN1KA0r9S7r" IsHidden="true" />
+        </Patch>
+      </Node>
+      <!--
+
+    ************************ ScanData ************************
+
+-->
+      <Node Name="ScanData" Bounds="353,180" Id="OB8iktqqjpgOACWKhqcOp4">
+        <p:NodeReference>
+          <Choice Kind="ForwardDefinition" Name="Forward" />
+          <CategoryReference Kind="Category" Name="Primitive" />
+        </p:NodeReference>
+        <p:TypeAnnotation LastCategoryFullName="Devices.LS2Lidar.Model" LastDependency="Devices.LS2Lidar.dll">
+          <Choice Kind="TypeFlag" Name="ScanData" />
+          <FullNameCategoryReference ID="Devices.LS2Lidar.Model" />
+          <AssemblyReference ID="Devices.LS2Lidar.dll" />
+        </p:TypeAnnotation>
+        <Patch Id="OlPRfJjftNQLxkvCVLEi5k">
+          <Canvas Id="FucR0BamNZ6LgzqtL8WSw7" BordersChecked="false" CanvasType="Group" />
+          <ProcessDefinition Id="L4OG1lgE7w0LcKzgpfvaQO" IsHidden="true" />
         </Patch>
       </Node>
     </Canvas>

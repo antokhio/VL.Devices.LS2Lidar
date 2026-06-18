@@ -10,7 +10,7 @@ namespace Devices.LS2Lidar
         // The C++ driver defines the sensor header as exactly 7 bytes long
         private const int SENSOR_HEADER_LENGTH = 7;
 
-        public void Parse(ReadOnlySpan<byte> payload, LidarScanData destination)
+        public void Parse(ReadOnlySpan<byte> payload, ScanData destination)
         {
             destination.Reset();
 

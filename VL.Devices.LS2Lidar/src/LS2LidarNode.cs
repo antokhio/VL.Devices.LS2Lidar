@@ -29,10 +29,10 @@ namespace VL.Devices.LS2Lidar
         private readonly LidarParser _parser = new LidarParser();
 
         // Pre-allocated container to completely eliminate GC allocations
-        private readonly LidarScanData _reusableScanData = new LidarScanData();
+        private readonly ScanData _reusableScanData = new ScanData();
 
         // vvvv Reactive Outputs
-        private readonly Subject<LidarScanData> _scans = new Subject<LidarScanData>();
+        private readonly Subject<ScanData> _scans = new Subject<ScanData>();
 
         // Networking State (Direct Socket Ownership)
         private NetSocket? _socket;
@@ -44,7 +44,7 @@ namespace VL.Devices.LS2Lidar
         public LS2LidarState LidarState { get; private set; } = LS2LidarState.Disconnected;
 
         [Fragment]
-        public IObservable<LidarScanData> Scans => _scans;
+        public IObservable<ScanData> Scans => _scans;
 
         [Fragment]
         public LS2LidarNode() { }
@@ -68,10 +68,12 @@ namespace VL.Devices.LS2Lidar
                 {
                     _remoteEndpoint = new IPEndPoint(parsedAddress, port);
 
-                    // The node instantiates and owns the socket directly
                     _socket = new NetSocket(SocketType.Dgram, ProtocolType.Udp);
                     _socket.ExclusiveAddressUse = false;
-                    _socket.Connect(_remoteEndpoint);
+
+                    // Bind to an OS-assigned free port (the device replies to whichever port we
+                    // send from). Each instance gets its own port, so multiple lidars don't collide.
+                    _socket.Bind(new IPEndPoint(IPAddress.Any, 0));
 
                     LidarState = LS2LidarState.Connected;
                     _cancellation = new CancellationTokenSource();

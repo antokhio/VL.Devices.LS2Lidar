@@ -6,7 +6,7 @@ namespace Devices.LS2Lidar.Model
     /// A pre-allocated container for a complete 360-degree sweep.
     /// In a real-time environment (VL), you instantiate this ONCE and pass it to the parser repeatedly.
     /// </summary>
-    public class LidarScanData
+    public class ScanData
     {
         /// <summary>
         /// The fixed-size array of measurements.
@@ -19,7 +19,7 @@ namespace Devices.LS2Lidar.Model
         /// </summary>
         public int ValidPointCount { get; set; }
 
-        public LidarScanData()
+        public ScanData()
         {
             // Allocate the array ONCE based on our Protocol constants (811 points)
             Points = new ScanPoint[Sensor.SCAN_MEASURES_COUNT];
