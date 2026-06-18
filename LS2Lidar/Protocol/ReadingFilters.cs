@@ -16,5 +16,16 @@
         /// (Original C++ name: INDEX_RANGE_MAX)
         /// </summary>
         public const int RAW_DISTANCE_MAX = 65415;
+
+        /// <summary>
+        /// Raw intensity values above this threshold indicate oversaturation/reflection
+        /// and should be clamped.
+        /// </summary>
+        public const int INTENSITY_OVERFLOW_THRESHOLD = 55000;
+
+        /// <summary>
+        /// The clamped intensity value to apply when an overflow occurs.
+        /// </summary>
+        public const float INTENSITY_OVERFLOW_VALUE = 600f;
     }
 }

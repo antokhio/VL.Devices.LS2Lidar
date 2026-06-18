@@ -5,6 +5,6 @@
     <File Path="LICENSE" />
     <File Path="NuGet.config" />
     <File Path="README.md" />
-    <Project Path="LS2Lidar/LS2Lidar.csproj" />
+    <Project Path="LS2Lidar/Devices.LS2Lidar.csproj" />
   </Folder>
 </Solution>
