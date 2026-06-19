@@ -4,6 +4,8 @@ A plugin for [vvvv](https://vvvv.org) that provides support for SDKELI LS2027/LS
 
 Tested with `LS2-2027D/H03`.
 
+![splash](assets/splash.png)
+
 ⚠️ **This project is currently in active development**
 
 ### Packages
