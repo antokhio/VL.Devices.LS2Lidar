@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document xmlns:p="property" xmlns:r="reflection" Id="P8biwutBmfjOGfFkl5zXiW" LanguageVersion="2025.7.2" Version="0.128">
+  <NugetDependency Id="UNA4KBnnBHALLMGx8SyNM6" Location="VL.CoreLib" Version="2025.7.2" />
+  <Patch Id="Qykh3d1NXeaO5kPplpWerh">
+    <Canvas Id="BJ9JslqYZVULj1FNgjCX5K" DefaultCategory="Devices.LS2Lidar" CanvasType="FullCategory">
+      <!--
+
+    ************************ ScanPoint ************************
+
+-->
+      <Node Name="ScanPoint" Bounds="497,180" Id="NxpgZcgxW4lMB2n0798wAk">
+        <p:NodeReference>
+          <Choice Kind="ForwardDefinition" Name="Forward" />
+          <CategoryReference Kind="Category" Name="Primitive" />
+        </p:NodeReference>
+        <p:TypeAnnotation LastCategoryFullName="Devices.LS2Lidar.Model" LastDependency="Devices.LS2Lidar.dll">
+          <Choice Kind="TypeFlag" Name="ScanPoint" />
+          <FullNameCategoryReference ID="Devices.LS2Lidar.Model" />
+          <AssemblyReference ID="Devices.LS2Lidar.dll" />
+        </p:TypeAnnotation>
+        <Patch Id="OiWeKv9gBHbLvpxIwxAUpt">
+          <Canvas Id="CwJp18ZNCohL53afkOlK8e" BordersChecked="false" CanvasType="Group" />
+          <ProcessDefinition Id="QyOl9OLGKGqMN1KA0r9S7r" IsHidden="true" />
+        </Patch>
+      </Node>
+      <!--
+
+    ************************ ScanData ************************
+
+-->
+      <Node Name="ScanData" Bounds="353,180" Id="OB8iktqqjpgOACWKhqcOp4">
+        <p:NodeReference>
+          <Choice Kind="ForwardDefinition" Name="Forward" />
+          <CategoryReference Kind="Category" Name="Primitive" />
+        </p:NodeReference>
+        <p:TypeAnnotation LastCategoryFullName="Devices.LS2Lidar.Model" LastDependency="Devices.LS2Lidar.dll">
+          <Choice Kind="TypeFlag" Name="ScanData" />
+          <FullNameCategoryReference ID="Devices.LS2Lidar.Model" />
+          <AssemblyReference ID="Devices.LS2Lidar.dll" />
+        </p:TypeAnnotation>
+        <Patch Id="OlPRfJjftNQLxkvCVLEi5k">
+          <Canvas Id="FucR0BamNZ6LgzqtL8WSw7" BordersChecked="false" CanvasType="Group" />
+          <ProcessDefinition Id="L4OG1lgE7w0LcKzgpfvaQO" IsHidden="true" />
+        </Patch>
+      </Node>
+      <!--
+
+    ************************ Scan ************************
+
+-->
+      <Node Name="Scan" Bounds="234,180" Id="KP9Ej5yxST0NxbR1dehYfi">
+        <p:NodeReference>
+          <Choice Kind="ForwardDefinition" Name="Forward" />
+          <CategoryReference Kind="Category" Name="Primitive" />
+        </p:NodeReference>
+        <p:TypeAnnotation LastCategoryFullName="Devices.LS2Lidar.Model" LastDependency="Devices.LS2Lidar.dll">
+          <Choice Kind="TypeFlag" Name="Scan" />
+          <FullNameCategoryReference ID="Devices.LS2Lidar.Model" />
+          <AssemblyReference ID="Devices.LS2Lidar.dll" />
+        </p:TypeAnnotation>
+        <Patch Id="ODS0zC9LJdjOO3HD3HDZNd">
+          <Canvas Id="QYCHjCsoDbsPks5GlkSQIj" BordersChecked="false" CanvasType="Group" />
+          <ProcessDefinition Id="KVwDVNv4BD3LdA2i0Hfoxa" IsHidden="true" />
+        </Patch>
+      </Node>
+    </Canvas>
+    <!--
+
+    ************************ Application ************************
+
+-->
+    <Node Name="Application" Bounds="100,100" Id="KosaN37V75nLpYCMLsHH9V">
+      <p:NodeReference>
+        <Choice Kind="ContainerDefinition" Name="Process" />
+        <CategoryReference Kind="Category" Name="Primitive" />
+      </p:NodeReference>
+      <Patch Id="HaL8OtGDaG8Mb4r1Q0mwN1">
+        <Canvas Id="Ic9dpCqiYHmMhn3seRr2Et" CanvasType="Group" />
+        <Patch Id="BXlJVMxsEqfPt3DdG7Nr5l" Name="Create" />
+        <Patch Id="OvI8c8J0puML90PxIFYi1T" Name="Update" />
+        <ProcessDefinition Id="MXguWdII52wPecFqxww8OG">
+          <Fragment Id="MnFS4o7t62CPoLembyx4IE" Patch="BXlJVMxsEqfPt3DdG7Nr5l" Enabled="true" />
+          <Fragment Id="DsyRYCHGC83L5Ozj677u3L" Patch="OvI8c8J0puML90PxIFYi1T" Enabled="true" />
+        </ProcessDefinition>
+      </Patch>
+    </Node>
+  </Patch>
+  <PlatformDependency Id="E6lN8mDbAVZNvDa34KdkZ7" Location="./lib/Debug/net8.0/Devices.LS2Lidar.dll" />
+  <PlatformDependency Id="HQsWApVBaj7N2vabWaLSwx" Location="./lib/Debug/net8.0/VL.Devices.LS2Lidar.dll" IsForward="true" />
+</Document>
