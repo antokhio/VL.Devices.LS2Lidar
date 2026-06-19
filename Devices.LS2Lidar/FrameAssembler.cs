@@ -1,5 +1,4 @@
 ﻿using System;
-using Devices.LS2Lidar.Protocol;
 
 namespace Devices.LS2Lidar
 {
@@ -22,15 +21,17 @@ namespace Devices.LS2Lidar
         public FrameAssembler()
         {
             // Allocate memory EXACTLY ONCE during initialization
-            _subBuffers = new byte[Network.MAX_SUB_PKG_NUM][];
-            _subLengths = new int[Network.MAX_SUB_PKG_NUM];
+            _subBuffers = new byte[Protocol.MAX_SUB_PKG_NUM][];
+            _subLengths = new int[Protocol.MAX_SUB_PKG_NUM];
 
-            for (int i = 0; i < Network.MAX_SUB_PKG_NUM; i++)
+            for (int i = 0; i < Protocol.MAX_SUB_PKG_NUM; i++)
             {
-                _subBuffers[i] = new byte[Network.CMD_FRAME_MAX_LEN];
+                _subBuffers[i] = new byte[Protocol.CMD_FRAME_MAX_LEN];
             }
 
-            _finalPayloadBuffer = new byte[Network.MAX_SUB_PKG_NUM * Network.CMD_FRAME_MAX_LEN];
+            _finalPayloadBuffer = new byte[
+                Protocol.MAX_SUB_PKG_NUM * Protocol.CMD_FRAME_MAX_LEN
+            ];
         }
 
         /// <summary>
@@ -41,16 +42,20 @@ namespace Devices.LS2Lidar
         {
             fullPayload = default;
 
-            if (datagram.Length < FrameOffsets.DATA_START)
+            if (datagram.Length < Protocol.Offsets.DATA_START)
                 return false;
 
             int totalIndex =
-                (datagram[FrameOffsets.TOTAL_INDEX_H] << 8) | datagram[FrameOffsets.TOTAL_INDEX_L];
-            int subPkgCount = datagram[FrameOffsets.SUB_PKG_NUM];
-            int subIndex = datagram[FrameOffsets.SUB_INDEX];
+                (datagram[Protocol.Offsets.TOTAL_INDEX_H] << 8)
+                | datagram[Protocol.Offsets.TOTAL_INDEX_L];
+            int subPkgCount = datagram[Protocol.Offsets.SUB_PKG_NUM];
+            int subIndex = datagram[Protocol.Offsets.SUB_INDEX];
 
             // 1. Strict Boundary Validation
-            if (subPkgCount < Network.MIN_SUB_PKG_NUM || subPkgCount > Network.MAX_SUB_PKG_NUM)
+            if (
+                subPkgCount < Protocol.MIN_SUB_PKG_NUM
+                || subPkgCount > Protocol.MAX_SUB_PKG_NUM
+            )
                 return false;
             if (subIndex < 0 || subIndex >= subPkgCount)
                 return false;
@@ -71,10 +76,10 @@ namespace Devices.LS2Lidar
             }
 
             // 4. Extract Payload (Strip Header and Buffer It)
-            int dataLength = datagram.Length - FrameOffsets.DATA_START;
+            int dataLength = datagram.Length - Protocol.Offsets.DATA_START;
 
             // Slice the incoming span and copy it directly into our 2D pre-allocated array
-            datagram.Slice(FrameOffsets.DATA_START, dataLength).CopyTo(_subBuffers[subIndex]);
+            datagram.Slice(Protocol.Offsets.DATA_START, dataLength).CopyTo(_subBuffers[subIndex]);
 
             _subLengths[subIndex] = dataLength;
             _receivedCount++;

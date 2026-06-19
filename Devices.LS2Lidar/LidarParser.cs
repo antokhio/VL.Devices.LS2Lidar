@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Buffers.Binary;
 using Devices.LS2Lidar.Model;
-using Devices.LS2Lidar.Protocol;
 
 namespace Devices.LS2Lidar
 {
@@ -18,7 +17,7 @@ namespace Devices.LS2Lidar
             //   [0    .. N*2)  => distance block   (millimetres, N = SCAN_MEASURES_COUNT)
             //   [N*2  .. N*4)  => intensity block  (raw reflection strength)
             // A distance-only frame is a single N*2 distance block at offset 0.
-            int blockBytes = Sensor.SCAN_MEASURES_COUNT * 2;
+            int blockBytes = Protocol.SCAN_MEASURES_COUNT * 2;
 
             if (payload.Length < blockBytes)
                 return;
@@ -29,7 +28,7 @@ namespace Devices.LS2Lidar
             const int distanceBase = 0;
             int intensityBase = blockBytes;
 
-            for (int i = 0; i < Sensor.SCAN_MEASURES_COUNT; i++)
+            for (int i = 0; i < Protocol.SCAN_MEASURES_COUNT; i++)
             {
                 // 1. Distance lives in the FIRST block.
                 int distanceOffset = distanceBase + (i * 2);
@@ -46,8 +45,8 @@ namespace Devices.LS2Lidar
                 // sentinel (50 m) both fall outside [MIN_RANGE, MAX_RANGE].
                 float distanceMeters = rawDistance / 1000.0f;
                 if (
-                    distanceMeters < Sensor.DEFAULT_MIN_RANGE
-                    || distanceMeters > Sensor.DEFAULT_MAX_RANGE
+                    distanceMeters < Protocol.DEFAULT_MIN_RANGE
+                    || distanceMeters > Protocol.DEFAULT_MAX_RANGE
                 )
                 {
                     destination.Points[i].IsValid = false;
@@ -58,8 +57,7 @@ namespace Devices.LS2Lidar
                 //    The vendor parser (sdkeli_ls1207de_parser.cpp) operates on an
                 //    `unsigned short`, so every step is INTEGER arithmetic and always
                 //    yields whole numbers (e.g. raw 1725 => 69), matching the values
-                //    shown by the vendor tool. Float math here is what produced the
-                //    fractional values (12.4, 237.5, ...) seen in the JSON export.
+                //    shown by the vendor tool.
                 float scaledIntensity = 0f;
                 if (hasIntensity)
                 {
@@ -70,9 +68,9 @@ namespace Devices.LS2Lidar
 
                     // Saturated returns are clamped to 600 first; the vendor then runs
                     // that clamped value back through the scaler (separate `if` blocks).
-                    if (rawIntensity > ReadingFilters.INTENSITY_OVERFLOW_THRESHOLD)
+                    if (rawIntensity > Protocol.INTENSITY_OVERFLOW_THRESHOLD)
                     {
-                        rawIntensity = ReadingFilters.INTENSITY_OVERFLOW_VALUE;
+                        rawIntensity = Protocol.INTENSITY_OVERFLOW_VALUE;
                     }
 
                     scaledIntensity =
@@ -85,7 +83,8 @@ namespace Devices.LS2Lidar
                 ref ScanPoint point = ref destination.Points[i];
                 point.Distance = distanceMeters;
                 point.Angle =
-                    Sensor.DEFAULT_ANGLE_MIN_CYCLES + (i * Sensor.DEFAULT_ANGLE_INCREMENT_CYCLES);
+                    Protocol.DEFAULT_ANGLE_MIN_CYCLES
+                    + (i * Protocol.DEFAULT_ANGLE_INCREMENT_CYCLES);
                 point.Intensity = scaledIntensity;
                 point.IsValid = true;
 

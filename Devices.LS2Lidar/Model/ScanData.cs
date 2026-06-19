@@ -1,6 +1,4 @@
-﻿using Devices.LS2Lidar.Protocol;
-
-namespace Devices.LS2Lidar.Model
+﻿namespace Devices.LS2Lidar.Model
 {
     /// <summary>
     /// A pre-allocated container for a complete 360-degree sweep.
@@ -22,7 +20,7 @@ namespace Devices.LS2Lidar.Model
         public ScanData()
         {
             // Allocate the array ONCE based on our Protocol constants (811 points)
-            Points = new ScanPoint[Sensor.SCAN_MEASURES_COUNT];
+            Points = new ScanPoint[Protocol.SCAN_MEASURES_COUNT];
         }
 
         /// <summary>

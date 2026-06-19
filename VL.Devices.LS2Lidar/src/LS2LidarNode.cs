@@ -3,7 +3,6 @@ using System.Net.Sockets;
 using System.Reactive.Subjects;
 using Devices.LS2Lidar;
 using Devices.LS2Lidar.Model;
-using Devices.LS2Lidar.Protocol;
 using VL.Core.Import;
 using NetSocket = System.Net.Sockets.Socket;
 
@@ -90,12 +89,12 @@ namespace VL.Devices.LS2Lidar
 
         public void StartScanning()
         {
-            SendCommand(Commands.CMD_START_STREAM_DATA);
+            SendCommand(Protocol.CMD_START_STREAM_DATA);
         }
 
         public void StopScanning()
         {
-            SendCommand(Commands.CMD_STOP_STREAM_DATA);
+            SendCommand(Protocol.CMD_STOP_STREAM_DATA);
             if (LidarState == LS2LidarState.Scanning)
             {
                 LidarState = LS2LidarState.Connected;
@@ -119,7 +118,7 @@ namespace VL.Devices.LS2Lidar
 
         private async Task ReceiveLoop(NetSocket socket, CancellationToken ct)
         {
-            byte[] receiveBuffer = new byte[Network.RECV_BUFFER_SIZE];
+            byte[] receiveBuffer = new byte[Protocol.RECV_BUFFER_SIZE];
 
             try
             {
