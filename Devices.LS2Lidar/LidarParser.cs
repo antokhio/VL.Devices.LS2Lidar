@@ -7,34 +7,36 @@ namespace Devices.LS2Lidar
 {
     public class LidarParser
     {
-        // The C++ driver defines the sensor header as exactly 7 bytes long
-        private const int SENSOR_HEADER_LENGTH = 7;
-
         public void Parse(ReadOnlySpan<byte> payload, ScanData destination)
         {
             destination.Reset();
 
-            if (payload.Length <= SENSOR_HEADER_LENGTH)
+            // The LS2027 streams a sweep as two contiguous big-endian uint16 blocks
+            // with NO leading header (verified on-wire: payload == 811*2 + 811*2):
+            //   [0    .. N*2)  => intensity block  (N = SCAN_MEASURES_COUNT)
+            //   [N*2  .. N*4)  => distance block   (millimetres)
+            // A distance-only frame is a single N*2 distance block at offset 0.
+            int blockBytes = Sensor.SCAN_MEASURES_COUNT * 2;
+
+            if (payload.Length < blockBytes)
                 return;
 
-            // Strip the 7-byte sensor header to align purely with the data blocks
-            ReadOnlySpan<byte> dataBytes = payload.Slice(SENSOR_HEADER_LENGTH);
-
-            // Calculate if intensity data is attached based on the remaining payload size.
-            // Distance alone is 811 * 2 = 1622 bytes. Intensity adds another 1622 bytes.
-            int expectedDistanceBytes = Sensor.SCAN_MEASURES_COUNT * 2;
-            bool hasIntensity = dataBytes.Length >= expectedDistanceBytes * 2;
+            // Intensity is present only when the payload carries BOTH blocks.
+            // When present, intensity is the FIRST block and distance the SECOND.
+            bool hasIntensity = payload.Length >= blockBytes * 2;
+            int distanceBase = hasIntensity ? blockBytes : 0;
+            const int intensityBase = 0;
 
             for (int i = 0; i < Sensor.SCAN_MEASURES_COUNT; i++)
             {
-                // 1. Calculate the byte offset for this specific point's Distance
-                int distanceOffset = i * 2;
+                // 1. Distance lives in the SECOND block when intensity is present.
+                int distanceOffset = distanceBase + (i * 2);
 
-                if (distanceOffset + 2 > dataBytes.Length)
+                if (distanceOffset + 2 > payload.Length)
                     break;
 
                 ushort rawDistance = BinaryPrimitives.ReadUInt16BigEndian(
-                    dataBytes.Slice(distanceOffset, 2)
+                    payload.Slice(distanceOffset, 2)
                 );
 
                 if (
@@ -46,14 +48,13 @@ namespace Devices.LS2Lidar
                     continue;
                 }
 
-                // 2. Calculate Intensity if available
+                // 2. Intensity lives in the FIRST block (raw 0..65535).
                 float scaledIntensity = 0f;
                 if (hasIntensity)
                 {
-                    // The intensity block starts immediately AFTER the entire distance block
-                    int intensityOffset = expectedDistanceBytes + (i * 2);
+                    int intensityOffset = intensityBase + (i * 2);
                     ushort rawIntensity = BinaryPrimitives.ReadUInt16BigEndian(
-                        dataBytes.Slice(intensityOffset, 2)
+                        payload.Slice(intensityOffset, 2)
                     );
 
                     // Scale logic ported directly from the C++ driver
@@ -71,16 +72,13 @@ namespace Devices.LS2Lidar
                     }
                 }
 
-                // 3. Write directly into the pre-allocated struct array
-                destination.Points[i] = new ScanPoint
-                {
-                    Distance = rawDistance / 1000.0f, // Assuming 1 unit = 1mm
-                    Angle =
-                        Sensor.DEFAULT_ANGLE_MIN_CYCLES
-                        + (i * Sensor.DEFAULT_ANGLE_INCREMENT_CYCLES),
-                    Intensity = scaledIntensity,
-                    IsValid = true,
-                };
+                // 3. Mutate the pre-allocated struct IN-PLACE (no `new`, zero GC).
+                ref ScanPoint point = ref destination.Points[i];
+                point.Distance = rawDistance / 1000.0f; // 1 unit = 1mm
+                point.Angle =
+                    Sensor.DEFAULT_ANGLE_MIN_CYCLES + (i * Sensor.DEFAULT_ANGLE_INCREMENT_CYCLES);
+                point.Intensity = scaledIntensity;
+                point.IsValid = true;
 
                 destination.ValidPointCount++;
             }
