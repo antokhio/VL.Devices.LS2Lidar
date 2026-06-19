@@ -31,7 +31,7 @@ namespace VL.Devices.LS2Lidar
         private readonly ScanData _reusableScanData = new ScanData();
 
         // vvvv Reactive Outputs
-        private readonly Subject<ScanData> _scans = new Subject<ScanData>();
+        private readonly Subject<Scan> _scans = new Subject<Scan>();
 
         // Networking State (Direct Socket Ownership)
         private NetSocket? _socket;
@@ -43,7 +43,7 @@ namespace VL.Devices.LS2Lidar
         public LS2LidarState LidarState { get; private set; } = LS2LidarState.Disconnected;
 
         [Fragment]
-        public IObservable<ScanData> Scans => _scans;
+        public IObservable<Scan> Scans => _scans;
 
         [Fragment]
         public LS2LidarNode() { }
@@ -99,6 +99,11 @@ namespace VL.Devices.LS2Lidar
             {
                 LidarState = LS2LidarState.Connected;
             }
+        }
+
+        public void Reboot()
+        {
+            SendCommand(Protocol.CMD_REBOOT);
         }
 
         private void SendCommand(ReadOnlySpan<byte> command)
@@ -163,7 +168,7 @@ namespace VL.Devices.LS2Lidar
                     LidarState = LS2LidarState.Scanning;
                 }
 
-                _scans.OnNext(_reusableScanData);
+                _scans.OnNext(Scan.Snapshot(_reusableScanData));
             }
         }
 

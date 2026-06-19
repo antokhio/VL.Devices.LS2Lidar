@@ -49,7 +49,7 @@ namespace Devices.LS2Lidar
                     || distanceMeters > Protocol.DEFAULT_MAX_RANGE
                 )
                 {
-                    destination.Points[i].IsValid = false;
+                    destination.Points[i] = default;
                     continue;
                 }
 
@@ -79,14 +79,11 @@ namespace Devices.LS2Lidar
                             : rawIntensity / 25;
                 }
 
-                // 3. Mutate the pre-allocated struct IN-PLACE (no `new`, zero GC).
-                ref ScanPoint point = ref destination.Points[i];
-                point.Distance = distanceMeters;
-                point.Angle =
+                // 3. Write the immutable point into the pre-allocated array slot (struct copy, zero GC).
+                float angle =
                     Protocol.DEFAULT_ANGLE_MIN_CYCLES
                     + (i * Protocol.DEFAULT_ANGLE_INCREMENT_CYCLES);
-                point.Intensity = scaledIntensity;
-                point.IsValid = true;
+                destination.Points[i] = new ScanPoint(distanceMeters, angle, scaledIntensity, true);
 
                 destination.ValidPointCount++;
             }

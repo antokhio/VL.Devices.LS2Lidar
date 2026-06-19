@@ -43,6 +43,26 @@
           <ProcessDefinition Id="L4OG1lgE7w0LcKzgpfvaQO" IsHidden="true" />
         </Patch>
       </Node>
+      <!--
+
+    ************************ Scan ************************
+
+-->
+      <Node Name="Scan" Bounds="234,180" Id="KP9Ej5yxST0NxbR1dehYfi">
+        <p:NodeReference>
+          <Choice Kind="ForwardDefinition" Name="Forward" />
+          <CategoryReference Kind="Category" Name="Primitive" />
+        </p:NodeReference>
+        <p:TypeAnnotation LastCategoryFullName="Devices.LS2Lidar.Model" LastDependency="Devices.LS2Lidar.dll">
+          <Choice Kind="TypeFlag" Name="Scan" />
+          <FullNameCategoryReference ID="Devices.LS2Lidar.Model" />
+          <AssemblyReference ID="Devices.LS2Lidar.dll" />
+        </p:TypeAnnotation>
+        <Patch Id="ODS0zC9LJdjOO3HD3HDZNd">
+          <Canvas Id="QYCHjCsoDbsPks5GlkSQIj" BordersChecked="false" CanvasType="Group" />
+          <ProcessDefinition Id="KVwDVNv4BD3LdA2i0Hfoxa" IsHidden="true" />
+        </Patch>
+      </Node>
     </Canvas>
     <!--
 

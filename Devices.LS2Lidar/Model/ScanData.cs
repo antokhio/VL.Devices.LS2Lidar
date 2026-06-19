@@ -1,9 +1,15 @@
 ﻿namespace Devices.LS2Lidar.Model
 {
     /// <summary>
-    /// A pre-allocated container for a complete 360-degree sweep.
-    /// In a real-time environment (VL), you instantiate this ONCE and pass it to the parser repeatedly.
+    /// A pre-allocated, mutable buffer for a complete 360-degree sweep.
+    /// In a real-time environment (VL), you instantiate this ONCE and pass it to the parser
+    /// repeatedly; the parser overwrites it in place to avoid garbage collection.
     /// </summary>
+    /// <remarks>
+    /// Because this buffer is reused and mutated every frame, it must NOT be retained, queued,
+    /// or shared across threads. To keep a sweep beyond the current frame, take an immutable
+    /// <see cref="Scan"/> snapshot via <see cref="Scan.Snapshot(ScanData)"/>.
+    /// </remarks>
     public class ScanData
     {
         /// <summary>
