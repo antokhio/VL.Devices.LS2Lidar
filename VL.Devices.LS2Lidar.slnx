@@ -6,6 +6,11 @@
     <File Path="NuGet.config" />
     <File Path="README.md" />
   </Folder>
+  <Folder Name="/Solution Items/.github/" />
+  <Folder Name="/Solution Items/.nuget/">
+    <File Path=".nuget/Devices.LS2Lidar.nuspec" />
+    <File Path=".nuget/VL.Devices.LS2Lidar.nuspec" />
+  </Folder>
   <Project Path="Devices.LS2Lidar/Devices.LS2Lidar.csproj" />
   <Project Path="VL.Devices.LS2Lidar/src/VL.Devices.LS2Lidar.csproj" />
 </Solution>

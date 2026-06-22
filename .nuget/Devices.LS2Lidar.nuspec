@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+  <metadata>
+    <id>Devices.LS2Lidar</id>
+    <title>Devices.LS2Lidar</title>
+    <version>0.0.0</version>
+    <authors>antokhio</authors>
+    <owners>antokhio</owners>
+    <projectUrl>https://github.com/antokhio/VL.Devices.LS2Lidar</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Common API for SDKELI LS2 LiDAR devices.</summary>
+    <description>Provides connection, parsing, and data streaming for SDKELI LS2027/LS1207DE LiDAR devices in C#.</description>
+    <tags>vl, vvvv, lidar, sdkeli, ls2, ls2027, ls1207de</tags>
+    <readme>README.md</readme>
+	  <license type="file">LICENSE</license>
+	  <icon>assets\icon.png</icon>
+    <dependencies>
+      <group targetFramework="netstandard2.1" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\Devices.LS2Lidar\bin\Release\netstandard2.1\**" target="lib\netstandard2.1\" exclude="" />
+    <file src="..\assets\icon.png" target="icon\" />
+    <file src="..\README.md" />
+    <file src="..\LICENSE" />
+  </files>
+</package>

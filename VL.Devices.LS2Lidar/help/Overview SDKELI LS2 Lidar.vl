@@ -577,11 +577,6 @@
                 <Pin Id="Ct8bAlzm7WiPsgYRtmoUbJ" Name="Enabled" Kind="InputPin" />
                 <Pin Id="Sm4RjNz0vN4PgDk1WXPkXm" Name="Output" Kind="OutputPin" />
               </Patch>
-              <!--
-
-    ************************  ************************
-
--->
               <ProcessDefinition Id="S2Tjxzn8l0zMl1jn3Ax7na">
                 <Fragment Id="DMUaBU3xeEvOgTYcDn14GE" Patch="P5UtiGATOvBNs7xdv5gqkI" Enabled="true" />
                 <Fragment Id="HH1uFF6es69PSpc5HzLNEx" Patch="AZ3DkMTGP1yPKmSdtvUESO" Enabled="true" />
@@ -645,7 +640,7 @@
             <Pin Id="HPttMthj78AOIj5Jru01Iq" Name="Count" Kind="InputPin" />
             <Pin Id="DcyDEXG9n4DPXnZsnS5zr4" Name="Offset" Kind="InputPin" DefaultValue="1" />
             <Pin Id="PW13PkMicemQQv4HOLAJ15" Name="Step" Kind="InputPin" />
-            <Pin Id="VP6t7gchFFDMtIKxrj0sMQ" Name="Divisions" Kind="InputPin" DefaultValue="10" />
+            <Pin Id="VP6t7gchFFDMtIKxrj0sMQ" Name="Divisions" Kind="InputPin" DefaultValue="20" />
             <Pin Id="Lyp9l9mYwDKPGq5tuX5DUv" Name="Paint" Kind="InputPin" />
             <Pin Id="Lb7tlgLmC97PtjHF6bIIXl" Name="Color" Kind="InputPin" />
             <Pin Id="IBr1NzVgZFDMyppBErVqKD" Name="Stroke Width" Kind="InputPin" DefaultValue="0.001" />
