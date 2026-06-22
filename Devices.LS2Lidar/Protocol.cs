@@ -19,24 +19,40 @@ namespace Devices.LS2Lidar
         /// <summary>
         /// Instructs the LiDAR to halt the transmission of UDP data streams.
         /// </summary>
+        [Obsolete(
+            "Vendor driver marks this as a TODO. The device may not support or respond properly to stop commands.",
+            error: false
+        )]
         public static ReadOnlySpan<byte> CMD_STOP_STREAM_DATA =>
             new byte[] { 0xFA, 0x5A, 0xA5, 0xAA, 0x00, 0x02, 0x02, 0x02 };
 
         /// <summary>
         /// Triggers a soft reboot or restart of the LiDAR hardware.
         /// </summary>
+        [Obsolete(
+            "Unimplemented by vendor firmware/driver. Disabled via CMD_REBOOT_DEVICE feature flag in vendor C++ SDK.",
+            error: false
+        )]
         public static ReadOnlySpan<byte> CMD_REBOOT =>
             new byte[] { 0xFA, 0x5A, 0xA5, 0xAA, 0x00, 0x02, 0x03, 0x03 };
 
         /// <summary>
         /// Requests the current operational status and health metrics from the device.
         /// </summary>
+        [Obsolete(
+            "Unimplemented by vendor firmware/driver. Disabled via CMD_DEVICE_INFO feature flag in vendor C++ SDK.",
+            error: false
+        )]
         public static ReadOnlySpan<byte> CMD_READ_DEVICE_STATE =>
             new byte[] { 0xFA, 0x5A, 0xA5, 0xAA, 0x00, 0x02, 0x04, 0x04 };
 
         /// <summary>
         /// Requests the factory serial number of the LiDAR unit.
         /// </summary>
+        [Obsolete(
+            "Unimplemented by vendor firmware/driver. Disabled via CMD_DEVICE_INFO feature flag in vendor C++ SDK.",
+            error: false
+        )]
         public static ReadOnlySpan<byte> CMD_READ_SERIAL_NUMBER =>
             new byte[] { 0xFA, 0x5A, 0xA5, 0xAA, 0x00, 0x02, 0x05, 0x05 };
 
@@ -44,19 +60,30 @@ namespace Devices.LS2Lidar
         /// Commands the device to enter maintenance access mode.
         /// </summary>
         /// <remarks>Shares the exact byte payload as <see cref="CMD_START_STREAM_DATA"/>.</remarks>
-        public static ReadOnlySpan<byte> CMD_SET_MAINTENANCE_ACCESS_MODE =>
-            CMD_START_STREAM_DATA;
+        [Obsolete(
+            "Unimplemented by vendor firmware/driver. Disabled via CMD_REBOOT_DEVICE feature flag in vendor C++ SDK.",
+            error: false
+        )]
+        public static ReadOnlySpan<byte> CMD_SET_MAINTENANCE_ACCESS_MODE => CMD_START_STREAM_DATA;
 
         /// <summary>
         /// Requests the device identification details.
         /// </summary>
         /// <remarks>Shares the exact byte payload as <see cref="CMD_START_STREAM_DATA"/>.</remarks>
+        [Obsolete(
+            "Unimplemented by vendor firmware/driver. Disabled via CMD_DEVICE_INFO feature flag in vendor C++ SDK.",
+            error: false
+        )]
         public static ReadOnlySpan<byte> CMD_READ_IDENTIFY => CMD_START_STREAM_DATA;
 
         /// <summary>
         /// Requests the current firmware version installed on the device.
         /// </summary>
         /// <remarks>Shares the exact byte payload as <see cref="CMD_START_STREAM_DATA"/>.</remarks>
+        [Obsolete(
+            "Unimplemented by vendor firmware/driver. Disabled via CMD_DEVICE_INFO feature flag in vendor C++ SDK.",
+            error: false
+        )]
         public static ReadOnlySpan<byte> CMD_READ_FIRMWARE_VERSION => CMD_START_STREAM_DATA;
 
         /// <summary>
