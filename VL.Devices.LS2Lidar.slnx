@@ -7,6 +7,9 @@
     <File Path="README.md" />
   </Folder>
   <Folder Name="/Solution Items/.github/" />
+  <Folder Name="/Solution Items/.github/workflows/">
+    <File Path=".github/workflows/push_nuget.yml" />
+  </Folder>
   <Folder Name="/Solution Items/.nuget/">
     <File Path=".nuget/Devices.LS2Lidar.nuspec" />
     <File Path=".nuget/VL.Devices.LS2Lidar.nuspec" />

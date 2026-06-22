@@ -24,7 +24,7 @@
     <file src="..\VL.Devices.LS2Lidar\lib\net8.0\**" target="lib\net8.0\" exclude="" />
     <file src="..\VL.Devices.LS2Lidar\*.vl" target="" exclude="" />
     <file src="..\VL.Devices.LS2Lidar\help\**" target="help\" exclude="" />
-    <file src="..\assets\icon.png" target="icon\" />
+    <file src="..\assets\icon.png" target="assets\" />
     <file src="..\README.md" />
     <file src="..\LICENSE" />
   </files>
