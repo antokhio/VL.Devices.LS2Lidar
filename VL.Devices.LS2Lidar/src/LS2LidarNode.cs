@@ -1,198 +1,103 @@
-﻿using System.Net;
-using System.Net.Sockets;
-using System.Reactive.Subjects;
-using Devices.LS2Lidar;
-using Devices.LS2Lidar.Model;
+﻿using VL.Core;
 using VL.Core.Import;
-using NetSocket = System.Net.Sockets.Socket;
 
 namespace VL.Devices.LS2Lidar
 {
-    public enum LS2LidarState
+    [ProcessNode(Name = "LS2Lidar")]
+    public class LS2LidarNode : LS2LidarNodeBase, IDisposable
     {
-        Disconnected,
-        Connected,
-        Scanning,
-        Error,
-    }
+        public const int WarningDisposalDelayMs = 8000;
 
-    [ProcessNode(
-        Name = "LS2Lidar",
-        HasStateOutput = true,
-        FragmentSelection = FragmentSelection.Explicit
-    )]
-    public class LS2LidarNode : IDisposable
-    {
-        // Core Logic Components (Zero-allocation processors)
-        private readonly FrameAssembler _assembler = new FrameAssembler();
-        private readonly LidarParser _parser = new LidarParser();
+        private readonly LS2Lidar _lidar = new();
 
-        // Pre-allocated container to completely eliminate GC allocations
-        private readonly ScanData _reusableScanData = new ScanData();
+        private string _remoteHost = LS2Lidar.DefaultRemoteHost;
+        private int _remotePort = LS2Lidar.DefaultRemotePort;
+        private bool _scan = true;
 
-        // vvvv Reactive Outputs
-        private readonly Subject<Scan> _scans = new Subject<Scan>();
+        // Tracks the endpoint we actually told the core to connect to, so we only
+        // reconnect when the requested host/port differs from what's live.
+        private string? _connectedHost;
+        private int? _connectedPort;
 
-        // Networking State (Direct Socket Ownership)
-        private NetSocket? _socket;
-        private IPEndPoint? _remoteEndpoint;
-        private CancellationTokenSource? _cancellation;
-        private Task? _receiveTask;
+        private readonly IDisposable _errorSubscription;
 
-        [Fragment]
-        public LS2LidarState LidarState { get; private set; } = LS2LidarState.Disconnected;
+        public ILS2Lidar Output => _lidar;
+        public bool IsConnected => _lidar.IsConnected;
+        public bool IsScanning => _lidar.IsScanning;
 
-        [Fragment]
-        public IObservable<Scan> Scans => _scans;
-
-        [Fragment]
-        public LS2LidarNode() { }
-
-        public void Connect(string ipAddress, int port = 2112)
+        public LS2LidarNode([Pin(Visibility = Model.PinVisibility.Hidden)] NodeContext nodeContext)
+            : base(nodeContext)
         {
-            if (!IPAddress.TryParse(ipAddress, out IPAddress? parsedAddress))
+            _errorSubscription = _lidar.OnError.Subscribe(ex =>
+                Warn(ex.Message, WarningDisposalDelayMs)
+            );
+        }
+
+        public void SetConnection(
+            string remoteHost = LS2Lidar.DefaultRemoteHost,
+            int remotePort = LS2Lidar.DefaultRemotePort
+        )
+        {
+            _remoteHost = remoteHost;
+            _remotePort = remotePort;
+        }
+
+        public void SetScan(bool scan = true)
+        {
+            _scan = scan;
+        }
+
+        /// <summary>
+        /// Per-frame entry point. Brings the underlying <see cref="LS2Lidar"/> in line with the
+        /// node's desired state: when <paramref name="isEnabled"/> is <see langword="false"/> the
+        /// device is disconnected; otherwise it (re)connects to the configured endpoint and starts
+        /// streaming when scanning was requested. Idempotent — designed to be called every frame.
+        /// </summary>
+        public void Update(bool isEnabled = true)
+        {
+            if (!isEnabled)
             {
-                LidarState = LS2LidarState.Error;
+                if (_lidar.IsConnected)
+                {
+                    _lidar.Disconnect();
+                    _connectedHost = null;
+                    _connectedPort = null;
+                }
                 return;
             }
 
-            if (_receiveTask != null && !parsedAddress.Equals(_remoteEndpoint?.Address))
-            {
-                Disconnect();
-            }
+            // Enabled: (re)connect if the target endpoint changed or we're not connected
+            // (the latter also auto-recovers if the device dropped between frames).
+            var endpointChanged = _remoteHost != _connectedHost || _remotePort != _connectedPort;
 
-            if (_receiveTask == null)
+            if (endpointChanged || !_lidar.IsConnected)
             {
-                try
+                _lidar.Connect(_remoteHost, _remotePort);
+
+                // A bad host pushes through OnError and leaves IsConnected false.
+                if (_lidar.IsConnected)
                 {
-                    _remoteEndpoint = new IPEndPoint(parsedAddress, port);
-
-                    _socket = new NetSocket(SocketType.Dgram, ProtocolType.Udp);
-                    _socket.ExclusiveAddressUse = false;
-
-                    // Bind to an OS-assigned free port (the device replies to whichever port we
-                    // send from). Each instance gets its own port, so multiple lidars don't collide.
-                    _socket.Bind(new IPEndPoint(IPAddress.Any, 0));
-
-                    LidarState = LS2LidarState.Connected;
-                    _cancellation = new CancellationTokenSource();
-                    _receiveTask = Task.Run(() => ReceiveLoop(_socket, _cancellation.Token));
+                    _connectedHost = _remoteHost;
+                    _connectedPort = _remotePort;
                 }
-                catch (Exception)
+                else
                 {
-                    LidarState = LS2LidarState.Error;
-                    _socket?.Dispose();
-                    _socket = null;
+                    _connectedHost = null;
+                    _connectedPort = null;
+                    return; // nothing to scan if we didn't connect
                 }
             }
+
+            // Kick off streaming once when requested and connected.
+            if (_scan && !_lidar.IsScanning)
+                _lidar.StartScan();
         }
 
-        public void StartScanning()
+        public override void Dispose()
         {
-            SendCommand(Protocol.CMD_START_STREAM_DATA);
-        }
-
-        public void StopScanning()
-        {
-            SendCommand(Protocol.CMD_STOP_STREAM_DATA);
-            if (LidarState == LS2LidarState.Scanning)
-            {
-                LidarState = LS2LidarState.Connected;
-            }
-        }
-
-        public void Reboot()
-        {
-            SendCommand(Protocol.CMD_REBOOT);
-        }
-
-        private void SendCommand(ReadOnlySpan<byte> command)
-        {
-            if (_socket != null && _remoteEndpoint != null)
-            {
-                try
-                {
-                    _socket.SendTo(command.ToArray(), _remoteEndpoint);
-                }
-                catch (SocketException)
-                {
-                    LidarState = LS2LidarState.Error;
-                }
-            }
-        }
-
-        private async Task ReceiveLoop(NetSocket socket, CancellationToken ct)
-        {
-            byte[] receiveBuffer = new byte[Protocol.RECV_BUFFER_SIZE];
-
-            try
-            {
-                while (!ct.IsCancellationRequested)
-                {
-                    int received = await socket.ReceiveAsync(receiveBuffer, SocketFlags.None, ct);
-
-                    if (received <= 0)
-                        continue;
-
-                    ProcessDatagram(receiveBuffer, received);
-                }
-            }
-            catch (OperationCanceledException) { }
-            catch (ObjectDisposedException) { }
-            catch (Exception)
-            {
-                LidarState = LS2LidarState.Error;
-            }
-            finally
-            {
-                if (LidarState == LS2LidarState.Scanning)
-                {
-                    LidarState = LS2LidarState.Connected;
-                }
-            }
-        }
-
-        private void ProcessDatagram(byte[] buffer, int received)
-        {
-            if (
-                _assembler.TryAssemble(
-                    buffer.AsSpan(0, received),
-                    out ReadOnlySpan<byte> fullPayload
-                )
-            )
-            {
-                _parser.Parse(fullPayload, _reusableScanData);
-
-                if (LidarState != LS2LidarState.Scanning)
-                {
-                    LidarState = LS2LidarState.Scanning;
-                }
-
-                _scans.OnNext(Scan.Snapshot(_reusableScanData));
-            }
-        }
-
-        public void Disconnect()
-        {
-            _cancellation?.Cancel();
-            _receiveTask?.Wait(500);
-            _cancellation?.Dispose();
-            _cancellation = null;
-            _receiveTask = null;
-
-            // Close and dispose the node's owned socket
-            _socket?.Close();
-            _socket?.Dispose();
-            _socket = null;
-
-            LidarState = LS2LidarState.Disconnected;
-        }
-
-        public void Dispose()
-        {
-            Disconnect();
-            _scans.OnCompleted();
-            _scans.Dispose();
+            _errorSubscription.Dispose();
+            _lidar.Dispose();
+            base.Dispose();
         }
     }
 }
