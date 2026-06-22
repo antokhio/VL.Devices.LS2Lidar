@@ -30,8 +30,16 @@ Tested with:
 
 Once invoked, the LiDAR device will stream data to the IP address that sent the start command. Because the stop command is unimplemented in the vendor SDK, the target IP and bound port will continue to receive data even after the application terminates. Currently, the only way to fully halt the data stream is to manually power cycle the device. Vendor mentions that it can properly operate 24/7. 
 
+### Installation
+```sh
+# For VL
+nuget install VL.Devices.LS2Lidar
+
+#For .NET projects
+nuget install antokhio.Devices.LS2Lidar
+```
 
 ### Packages
 
-* `Devices.LS2Lidar` - `.NET Standard 2.1` common API for SDKELI LS2 LiDAR devices, to be consumed by C# projects.
+* `antokhio.Devices.LS2Lidar` - `.NET Standard 2.1` common API for SDKELI LS2 LiDAR devices, to be consumed by C# projects.
 * `VL.Devices.LS2Lidar` - `.NET 8` vvvv plugin for SDKELI LS2027/LS1207DE LiDAR devices.
