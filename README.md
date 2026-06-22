@@ -1,6 +1,6 @@
 # VL.Devices.LS2Lidar (WIP)
 
-A plugin for [vvvv](https://vvvv.org) that provides support for [SDKELI](https://www.sdkeli.com/) LS2027/LS1207DE LIDAR devices.
+A plugin for [vvvv](https://vvvv.org) that provides support for [SDKELI](https://www.sdkeli.com/) LS2027/LS1207DE LiDAR devices.
 
 ![splash](assets/splash.png)
 
@@ -12,6 +12,7 @@ Tested with:
 ### Features
 
 **Implemented:**
+* Asynchronous UDP connection with auto-recovery and background receiving loop.
 * Starting the continuous distance data stream (`CMD_START_STREAM_DATA`).
 * Parsing incoming raw UDP datagrams into structured scan data.
 * Filtering raw LiDAR data (e.g., handling intensity overflows and distance bounding).
@@ -32,5 +33,5 @@ Once invoked, the LiDAR device will stream data to the IP address that sent the 
 
 ### Packages
 
-* `Devices.LS2Lidar` - `.NET Standard` common api for SDKELI LS2 Lidar devices, to be consumed by C# projects.
-* `VL.Devices.LS2Lidar` - vvvv plugin for SDKELI LS2027/LS1207DE LIDAR devices.
+* `Devices.LS2Lidar` - `.NET Standard 2.1` common API for SDKELI LS2 LiDAR devices, to be consumed by C# projects.
+* `VL.Devices.LS2Lidar` - `.NET 8` vvvv plugin for SDKELI LS2027/LS1207DE LiDAR devices.

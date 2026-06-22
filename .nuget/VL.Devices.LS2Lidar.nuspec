@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+	<metadata>
+		<id>VL.Devices.LS2Lidar</id>
+		<title>VL.Devices.LS2Lidar</title>
+		<version>0.0.0</version>
+		<authors>antokhio</authors>
+		<owners>antokhio</owners>
+		<projectUrl>https://github.com/antokhio/VL.Devices.LS2Lidar</projectUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<summary>vvvv plugin for SDKELI LS2027/LS1207DE LiDAR devices.</summary>
+		<description>Provides vvvv support for SDKELI LS2027/LS1207DE LiDAR devices.</description>
+		<tags>vl, vvvv, lidar, sdkeli, ls2, ls2027, ls1207de</tags>
+		<readme>README.md</readme>
+		<license type="file">LICENSE</license>
+		<icon>assets\icon.png</icon>
+		<dependencies>
+			<group targetFramework="net8.0">
+				<dependency id="VL.Core" version="2025.7.2" />
+			</group>
+		</dependencies>
+	</metadata>
+  <files>
+    <file src="..\VL.Devices.LS2Lidar\lib\net8.0\**" target="lib\net8.0\" exclude="" />
+    <file src="..\VL.Devices.LS2Lidar\*.vl" target="" exclude="" />
+    <file src="..\VL.Devices.LS2Lidar\help\**" target="help\" exclude="" />
+    <file src="..\assets\icon.png" target="icon\" />
+    <file src="..\README.md" />
+    <file src="..\LICENSE" />
+  </files>
+</package>

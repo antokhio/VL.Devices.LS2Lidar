@@ -1,0 +1,63 @@
+name: push_nuget
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+jobs: 
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.x.x"
+
+      - name: Setup Nuget.exe
+        uses: nuget/setup-nuget@v1
+
+      - name: Build packages
+        run: |
+          dotnet build .\Devices.LS2Lidar\Devices.LS2Lidar.csproj --configuration Release
+          dotnet build .\VL.Devices.LS2Lidar\src\VL.Devices.LS2Lidar.csproj --configuration Release --output .\VL.Devices.LS2Lidar\lib\net8.0\
+
+      - name: Extract version and detect pre-release
+        id: version
+        run: |
+          $version = "${{ github.ref_name }}"
+          $cleanVersion = $version.Substring(1)
+
+          $isPrerelease = $cleanVersion -match "[\-+]"
+
+          echo "VERSION=$cleanVersion" >> $env:GITHUB_ENV
+          echo "IS_PRERELEASE=$isPrerelease" >> $env:GITHUB_ENV
+
+      - name: Pack packages
+        run: |
+          nuget pack .nuget\Devices.LS2Lidar.nuspec -Version ${{ env.VERSION }} -OutputDirectory .\packages
+          nuget pack .nuget\VL.Devices.LS2Lidar.nuspec -Version ${{ env.VERSION }} -OutputDirectory .\packages
+
+      - name: Publish to NuGet.org
+        run: |
+          Write-Host "Publishing to NuGet.org..."
+          foreach ($package in Get-ChildItem -Path ./packages -Filter *.nupkg) {
+            dotnet nuget push $package `
+              --api-key ${{ secrets.NUGET_KEY }} `
+              --source https://api.nuget.org/v3/index.json `
+              --skip-duplicate
+          }
+
+      - name: Upload artifacts
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: packages/**
+          generateReleaseNotes: true
+          allowUpdates: true
+          prerelease: ${{ env.IS_PRERELEASE == 'True' }}
+          token: ${{ secrets.GITHUB_TOKEN }}
