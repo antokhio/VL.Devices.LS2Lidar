@@ -10,7 +10,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>Common API for SDKELI LS2 LiDAR devices.</summary>
     <description>Provides connection, parsing, and data streaming for SDKELI LS2027/LS1207DE LiDAR devices in C#.</description>
-    <tags>vl, vvvv, lidar, sdkeli, ls2, ls2027, ls1207de</tags>
+    <tags>lidar, sdkeli, ls2, ls2027, ls1207de</tags>
     <readme>README.md</readme>
 	  <license type="file">LICENSE</license>
 	  <icon>assets\icon.png</icon>
